@@ -1,0 +1,38 @@
+services:
+  - name: fastapi-library-app
+    env: python
+    plan: free
+    region: oregon  # Choose nearest region: oregon, ohio, frankfurt, singapore, sydney
+    
+    # Build and Start Commands
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 80
+    
+    # Health Check (optional but recommended)
+    healthCheckPath: /docs
+    
+    # Auto-deploy settings
+    autoDeploy: true
+    branch: main
+    
+    # Environment Variables
+    envVars:
+      # MongoDB Connection (Set these in Render Dashboard)
+      - key: MONGO_USERNAME
+        sync: false  # You'll set this in Render Dashboard
+      - key: MONGO_PASSWORD
+        sync: false  # You'll set this in Render Dashboard (URL-encoded)
+      - key: MONGO_CLUSTER
+        sync: false  # You'll set this in Render Dashboard
+      - key: MONGO_URL
+        sync: false  # Or set this directly (preferred)
+      
+      # Optional: Auto-generate secret key
+      - key: SECRET_KEY
+        generateValue: true
+      
+      # Environment
+      - key: ENVIRONMENT
+        value: production
